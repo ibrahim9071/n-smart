@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
 
     
-    const API_KEY = process.env.TMDB_API_KEY || 'Buraya Api Key Gir';
+    const API_KEY = '096ea7080794ac4c3de90f66c72cc237';
     
     const BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -18,13 +18,12 @@ export default async function handler(req, res) {
         primary_release_year,
         with_original_language,
         exclude_anime,
-        language = 'tr-TR',        // Varsayılan Türkçe
-        with_keywords              // Türkçe dublaj/altyazı için
+        language = 'tr-TR',
+        with_keywords
     } = req.query;
 
     let target_url = '';
 
-    // Dil parametresini ekle
     const langParam = `&language=${language}`;
 
     if (action === 'search') {
@@ -51,7 +50,6 @@ export default async function handler(req, res) {
         }
     }
 
-    // Türkçe Dublaj/Altyazı keyword filtresi
     if (with_keywords) {
         target_url += `&with_keywords=${encodeURIComponent(with_keywords)}`;
     }
