@@ -294,7 +294,7 @@
     // Film detaylarını çek - YENİ API KEY İLE
     async function loadMovieDetails() {
         try {
-            const API_KEY = 'Buraya Api Key Gir ';
+            const API_KEY = '096ea7080794ac4c3de90f66c72cc237';
             const url = `https://api.themoviedb.org/3/${contentType === 'tv' ? 'tv' : 'movie'}/${movieId}?api_key=${API_KEY}&language=tr-TR`;
             const response = await fetch(url);
             const data = await response.json();
