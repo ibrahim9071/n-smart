@@ -3,61 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MutluFlix - Film İzle</title>
+    <title>NETBOX life - Film İzle</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', 'Poppins', sans-serif;
         }
 
         body {
-            background: #0a0c12;
+            background: #0a0a0a;
             color: #fff;
         }
 
         .header {
-            background: #11161f;
+            background: linear-gradient(135deg, #0f0f0f 0%, #141414 100%);
             padding: 15px 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 15px;
-            border-bottom: 1px solid #1f2937;
+            border-bottom: 2px solid #d4af37;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
         .back-btn {
             color: #fff;
             text-decoration: none;
-            background: #1a1f2e;
+            background: #1a1a1a;
             padding: 10px 22px;
             border-radius: 40px;
-            border: 1px solid #2d3748;
+            border: 1px solid #d4af37;
             transition: 0.3s;
             font-weight: 600;
         }
 
         .back-btn:hover {
-            background: #e50914;
-            border-color: #e50914;
+            background: #d4af37;
+            border-color: #d4af37;
+            color: #000;
         }
 
         .logo {
             font-size: 26px;
             font-weight: 800;
-            color: #e50914;
             cursor: pointer;
+            background: linear-gradient(135deg, #d4af37, #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .logo span { color: #fff; }
+        .logo span { 
+            background: linear-gradient(135deg, #fff, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
 
-        /* SADECE UYARI BANNER - REKLAM ENGELLEYICI YOK */
+        /* UYARI BANNER - ALTIN TEMA */
         .warning-banner {
-            background: linear-gradient(135deg, #1a1f2e 0%, #0f1117 100%);
-            border: 1px solid #e50914;
+            background: linear-gradient(135deg, #111111 0%, #0a0a0a 100%);
+            border: 1px solid #d4af37;
             border-radius: 12px;
             padding: 12px 20px;
             margin: 15px 20px 0 20px;
@@ -66,15 +76,16 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
+            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.2);
         }
 
         .warning-banner i {
-            color: #e50914;
+            color: #d4af37;
             font-size: 20px;
         }
 
         .warning-banner strong {
-            color: #e50914;
+            color: #d4af37;
         }
 
         .player-container {
@@ -84,17 +95,19 @@
         }
 
         .server-section {
-            background: #11161f;
+            background: #111111;
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid #1f2937;
+            border: 1px solid #d4af37;
+            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.1);
         }
 
         .server-title {
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 15px;
+            color: #d4af37;
         }
 
         .server-grid {
@@ -104,8 +117,8 @@
         }
 
         .server-btn {
-            background: #1a1f2e;
-            border: 1px solid #2d3748;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
             padding: 12px 8px;
             border-radius: 10px;
             color: #e5e7eb;
@@ -117,14 +130,15 @@
         }
 
         .server-btn:hover {
-            background: #2d3748;
+            background: #2a2a2a;
             transform: translateY(-2px);
+            border-color: #d4af37;
         }
 
         .server-btn.active {
-            background: #e50914;
-            border-color: #e50914;
-            color: #fff;
+            background: linear-gradient(135deg, #d4af37, #b8960c);
+            border-color: #d4af37;
+            color: #000;
         }
 
         .video-wrapper {
@@ -134,7 +148,8 @@
             background: #000;
             border-radius: 16px;
             overflow: hidden;
-            border: 1px solid #1f2937;
+            border: 2px solid #d4af37;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
         }
 
         .video-wrapper iframe {
@@ -149,15 +164,19 @@
         .movie-info {
             margin-top: 25px;
             padding: 20px;
-            background: #11161f;
+            background: #111111;
             border-radius: 16px;
-            border: 1px solid #1f2937;
+            border: 1px solid #d4af37;
         }
 
         .movie-title {
             font-size: 26px;
             font-weight: 700;
             margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .movie-details {
@@ -169,18 +188,23 @@
         }
 
         .movie-details span {
-            background: #1a1f2e;
+            background: #1a1a1a;
             padding: 5px 12px;
             border-radius: 20px;
+            border-left: 2px solid #d4af37;
         }
 
         .footer-note {
             text-align: center;
             padding: 30px;
             font-size: 12px;
-            color: #4b5563;
-            border-top: 1px solid #1f2937;
+            color: #6b7280;
+            border-top: 1px solid #d4af37;
             margin-top: 40px;
+        }
+
+        .footer-note strong {
+            color: #d4af37;
         }
 
         @media (max-width: 768px) {
@@ -196,18 +220,18 @@
 
 <div class="header">
     <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i> Geri</a>
-    <div class="logo" onclick="window.location.href='index.html'">MUTLU<span>FLIX</span></div>
+    <div class="logo" onclick="window.location.href='index.html'">NET<span>BOX life</span></div>
 </div>
 
-<!-- SADECE UYARI BANNER - REKLAM BİZE AİT DEĞİL -->
+<!-- UYARI BANNER - SADECE BİLGİLENDİRME -->
 <div class="warning-banner">
     <div style="display: flex; align-items: center; gap: 10px;">
-        <i class="fas fa-shield-alt"></i>
-        <span>⚠️ <strong>MutluFlix</strong> reklamsız bir sitedir!</span>
+        <i class="fas fa-crown"></i>
+        <span>👑 <strong>NETBOX life</strong> tamamen reklamsızdır!</span>
         <span>Gördüğünüz reklamlar <strong>video oynatıcı sağlayıcılarına</strong> aittir.</span>
     </div>
     <div>
-        <i class="fas fa-check-circle" style="color:#10b981;"></i> %100 Reklamsız Site
+        <i class="fas fa-gem" style="color:#d4af37;"></i> Premium Kalite
     </div>
 </div>
 
@@ -227,7 +251,7 @@
             <button class="server-btn" data-server="8"><i class="fas fa-link"></i> VidLink</button>
             <button class="server-btn" data-server="9"><i class="fas fa-hdd"></i> AutoEmbed</button>
         </div>
-        <p style="font-size: 11px; color: #6b7280; margin-top: 12px; text-align: center;">
+        <p style="font-size: 11px; color: #d4af37; margin-top: 12px; text-align: center;">
             💡 Bir player çalışmazsa başka player deneyin. Reklamlar player sağlayıcılara aittir.
         </p>
     </div>
@@ -243,7 +267,8 @@
 </div>
 
 <div class="footer-note">
-    <p>🍿 <strong>MutluFlix</strong> - Reklamsız Film Keyfi | Videolardaki reklamlar 3. parti sağlayıcılara aittir.</p>
+    <p>🍿 <strong>NETBOX life</strong> - Reklamsız Film Keyfi | Videolardaki reklamlar 3. parti sağlayıcılara aittir.</p>
+    <p style="margin-top: 8px;">✨ Altın Kalite Deneyim ✨</p>
 </div>
 
 <script>
@@ -253,9 +278,9 @@
     let contentType = urlParams.get('mode') || 'movie';
 
     document.getElementById('movieTitle').innerText = movieTitle;
-    document.title = `${movieTitle} - MutluFlix`;
+    document.title = `${movieTitle} - NETBOX life`;
 
-    // YENİ API KEY İLE PLAYER SUNUCULARI
+    // TÜM PLAYER SUNUCULARI
     const servers = {
         1: contentType === 'tv' ? `https://vidsrc.in/embed/tv/${movieId}/1/1` : `https://vidsrc.in/embed/movie/${movieId}`,
         2: contentType === 'tv' ? `https://embed.su/embed/tv/${movieId}/1/1` : `https://embed.su/embed/movie/${movieId}`,
@@ -291,7 +316,7 @@
         });
     });
 
-    // Film detaylarını çek - YENİ API KEY İLE
+    // Film detaylarını çek - TMDB API
     async function loadMovieDetails() {
         try {
             const API_KEY = '096ea7080794ac4c3de90f66c72cc237';
@@ -308,7 +333,7 @@
                     <span>${type}</span>
                     <span>📅 ${year || '2025'}</span>
                     <span>⭐ ${rating}/10</span>
-                    <span>🎥 MutluFlix Özel</span>
+                    <span>👑 NETBOX life Özel</span>
                 `;
             }
         } catch (error) {
