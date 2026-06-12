@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>NETBOX life - Film İzle</title>
+    <title>NETBOX life - Film/Dizi İzle</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -264,18 +264,14 @@
             <i class="fas fa-server"></i> Video Oynatıcı Seçin
         </div>
         <div class="server-grid" id="serverGrid">
-            <button class="server-btn active" data-server="1"><i class="fas fa-play"></i> VidSrc</button>
-            <button class="server-btn" data-server="2"><i class="fas fa-bolt"></i> Embed.su</button>
-            <button class="server-btn" data-server="3"><i class="fas fa-film"></i> MultiEmbed</button>
-            <button class="server-btn" data-server="4"><i class="fas fa-tv"></i> 2Embed</button>
-            <button class="server-btn" data-server="5"><i class="fas fa-video"></i> MovieEmbed</button>
-            <button class="server-btn" data-server="6"><i class="fas fa-play-circle"></i> VidSrc Pro</button>
-            <button class="server-btn" data-server="7"><i class="fas fa-cloud"></i> Smashy</button>
-            <button class="server-btn" data-server="8"><i class="fas fa-link"></i> VidLink</button>
-            <button class="server-btn" data-server="9"><i class="fas fa-hdd"></i> AutoEmbed</button>
+            <button class="server-btn active" data-server="1"><i class="fas fa-play"></i> Server 1</button>
+            <button class="server-btn" data-server="2"><i class="fas fa-bolt"></i> Server 2</button>
+            <button class="server-btn" data-server="3"><i class="fas fa-film"></i> Server 3</button>
+            <button class="server-btn" data-server="4"><i class="fas fa-tv"></i> Server 4</button>
+            <button class="server-btn" data-server="5"><i class="fas fa-video"></i> Server 5</button>
         </div>
         <p style="font-size: 11px; color: #d4af37; margin-top: 12px; text-align: center;">
-            💡 Bir player çalışmazsa başka player deneyin. Reklamlar player sağlayıcılara aittir.
+            💡 Bir player çalışmazsa başka player deneyin. Dizilerde sezon/bölüm seçtikten sonra "Bölümü Yükle" butonuna basın.
         </p>
     </div>
 
@@ -292,11 +288,14 @@
             <div class="episode-title">
                 <i class="fas fa-list"></i> Bölüm Seçin
             </div>
-            <div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
                 <select id="seasonSelect" class="season-select"></select>
                 <select id="episodeSelect" class="episode-select"></select>
-                <button id="loadEpisodeBtn" style="background: #d4af37; color:#000; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-weight:600;">▶ İzle</button>
+                <button id="loadEpisodeBtn" style="background: #d4af37; color:#000; border:none; padding:8px 20px; border-radius:8px; cursor:pointer; font-weight:600;">🎬 Bölümü Yükle</button>
             </div>
+            <p style="font-size: 12px; color: #d4af37; margin-top: 10px;">
+                ⚠️ Not: Bölüm seçtikten sonra "Bölümü Yükle" butonuna basmayı unutmayın!
+            </p>
         </div>
     </div>
 </div>
@@ -314,25 +313,33 @@
 
     let currentSeason = 1;
     let currentEpisode = 1;
-    let totalSeasons = 1;
 
     document.getElementById('movieTitle').innerText = movieTitle;
     document.title = `${movieTitle} - NETBOX life`;
 
-    // DÜZELTİLMİŞ PLAYER SUNUCULARI - Dizi URL formatları doğru
+    // TEST EDİLMİŞ VE ÇALIŞAN PLAYER URL'LERİ
     function getServerUrl(serverNum, season, episode) {
-        const servers = {
-            1: contentType === 'tv' ? `https://vidsrc.in/embed/tv?tmdb=${movieId}&season=${season}&episode=${episode}` : `https://vidsrc.in/embed/movie/${movieId}`,
-            2: contentType === 'tv' ? `https://embed.su/embed/tv/${movieId}/${season}/${episode}` : `https://embed.su/embed/movie/${movieId}`,
-            3: contentType === 'tv' ? `https://multiembed.mov/?video_id=${movieId}&tmdb=1&season=${season}&episode=${episode}` : `https://multiembed.mov/?video_id=${movieId}&tmdb=1`,
-            4: contentType === 'tv' ? `https://2embed.org/embed/tmdb/tv?id=${movieId}&s=${season}&e=${episode}` : `https://2embed.org/embed/tmdb/movie?id=${movieId}`,
-            5: contentType === 'tv' ? `https://movieembed.site/tv/${movieId}/${season}/${episode}` : `https://movieembed.site/movie/${movieId}`,
-            6: contentType === 'tv' ? `https://vidsrc.pro/embed/tv/${movieId}/${season}/${episode}` : `https://vidsrc.pro/embed/movie/${movieId}`,
-            7: contentType === 'tv' ? `https://embed.smashystream.com/playere.php?tmdb=${movieId}&season=${season}&episode=${episode}` : `https://embed.smashystream.com/playere.php?tmdb=${movieId}`,
-            8: contentType === 'tv' ? `https://vidlink.pro/tv/${movieId}/${season}/${episode}` : `https://vidlink.pro/movie/${movieId}`,
-            9: contentType === 'tv' ? `https://autoembed.to/tv/tmdb/${movieId}-${season}-${episode}` : `https://autoembed.to/movie/tmdb/${movieId}`
-        };
-        return servers[serverNum];
+        if (contentType === 'tv') {
+            // DİZİ URL'LERİ - FARKLI FORMATLAR
+            const tvUrls = {
+                1: `https://vidsrc.xyz/embed/tv/${movieId}/${season}/${episode}`,
+                2: `https://embed.su/embed/tv/${movieId}/${season}/${episode}`,
+                3: `https://vidsrc.pro/embed/tv/${movieId}/${season}/${episode}`,
+                4: `https://vidsrc.net/embed/tv/${movieId}/${season}/${episode}`,
+                5: `https://2embed.org/embed/tv/${movieId}/${season}/${episode}`
+            };
+            return tvUrls[serverNum];
+        } else {
+            // FİLM URL'LERİ
+            const movieUrls = {
+                1: `https://vidsrc.xyz/embed/movie/${movieId}`,
+                2: `https://embed.su/embed/movie/${movieId}`,
+                3: `https://vidsrc.pro/embed/movie/${movieId}`,
+                4: `https://vidsrc.net/embed/movie/${movieId}`,
+                5: `https://2embed.org/embed/movie/${movieId}`
+            };
+            return movieUrls[serverNum];
+        }
     }
 
     let activeServer = 1;
@@ -342,12 +349,15 @@
         const url = getServerUrl(activeServer, currentSeason, currentEpisode);
         if (url) {
             player.src = url;
-            console.log('Yüklenen URL:', url);
+            console.log('🎬 Yüklenen URL:', url);
+            console.log('📺 Sezon:', currentSeason, 'Bölüm:', currentEpisode);
         } else {
             console.error('URL oluşturulamadı');
+            alert('Video URL oluşturulamadı!');
         }
     }
 
+    // Dizi ise bölüm seçiciyi göster
     if (contentType === 'tv') {
         document.getElementById('episodeSelector').style.display = 'block';
     }
@@ -356,10 +366,6 @@
     document.querySelectorAll('.server-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const serverNum = parseInt(btn.dataset.server);
-            if (!getServerUrl(serverNum, currentSeason, currentEpisode)) {
-                alert('Bu player şu anda kullanılamıyor.');
-                return;
-            }
             
             document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -368,7 +374,7 @@
         });
     });
 
-    // Dizi bilgilerini ve sezon/episode seçeneklerini yükle
+    // Dizi bilgilerini yükle
     async function loadTVDetails() {
         try {
             const API_KEY = '096ea7080794ac4c3de90f66c72cc237';
@@ -388,7 +394,7 @@
                     <span>👑 NETBOX life Özel</span>
                 `;
 
-                totalSeasons = data.number_of_seasons || 1;
+                const totalSeasons = data.number_of_seasons || 1;
                 const seasonSelect = document.getElementById('seasonSelect');
                 seasonSelect.innerHTML = '';
                 
@@ -400,11 +406,9 @@
                 }
                 
                 await loadEpisodes(1);
-                loadVideo();
             }
         } catch (error) {
             console.error('Dizi detayları yüklenemedi:', error);
-            loadVideo();
         }
     }
 
@@ -422,18 +426,16 @@
                 data.episodes.forEach(episode => {
                     const option = document.createElement('option');
                     option.value = episode.episode_number;
-                    option.textContent = `${episode.episode_number}. Bölüm - ${episode.name.substring(0, 40)}`;
+                    option.textContent = `${episode.episode_number}. Bölüm - ${episode.name.substring(0, 35)}`;
                     episodeSelect.appendChild(option);
                 });
-                
-                currentEpisode = 1;
-                episodeSelect.value = 1;
             }
         } catch (error) {
             console.error('Bölümler yüklenemedi:', error);
+            // Manuel bölüm ekle
             const episodeSelect = document.getElementById('episodeSelect');
             episodeSelect.innerHTML = '';
-            for (let i = 1; i <= 12; i++) {
+            for (let i = 1; i <= 10; i++) {
                 const option = document.createElement('option');
                 option.value = i;
                 option.textContent = `${i}. Bölüm`;
@@ -481,8 +483,12 @@
         }
     }
 
+    // Başlat
     if (contentType === 'tv') {
         loadTVDetails();
+        setTimeout(() => {
+            loadVideo();
+        }, 1000);
     } else {
         loadMovieDetails();
         loadVideo();
