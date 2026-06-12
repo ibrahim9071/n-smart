@@ -315,18 +315,17 @@
     let currentSeason = 1;
     let currentEpisode = 1;
     let totalSeasons = 1;
-    let totalEpisodes = {};
 
     document.getElementById('movieTitle').innerText = movieTitle;
     document.title = `${movieTitle} - NETBOX life`;
 
-    // Player sunucuları (bölüm desteği ile)
+    // DÜZELTİLMİŞ PLAYER SUNUCULARI - Dizi URL formatları doğru
     function getServerUrl(serverNum, season, episode) {
         const servers = {
-            1: contentType === 'tv' ? `https://vidsrc.in/embed/tv/${movieId}/${season}/${episode}` : `https://vidsrc.in/embed/movie/${movieId}`,
+            1: contentType === 'tv' ? `https://vidsrc.in/embed/tv?tmdb=${movieId}&season=${season}&episode=${episode}` : `https://vidsrc.in/embed/movie/${movieId}`,
             2: contentType === 'tv' ? `https://embed.su/embed/tv/${movieId}/${season}/${episode}` : `https://embed.su/embed/movie/${movieId}`,
             3: contentType === 'tv' ? `https://multiembed.mov/?video_id=${movieId}&tmdb=1&season=${season}&episode=${episode}` : `https://multiembed.mov/?video_id=${movieId}&tmdb=1`,
-            4: contentType === 'tv' ? `https://2embed.org/embed/tv/${movieId}/${season}/${episode}` : `https://2embed.org/embed/movie/${movieId}`,
+            4: contentType === 'tv' ? `https://2embed.org/embed/tmdb/tv?id=${movieId}&s=${season}&e=${episode}` : `https://2embed.org/embed/tmdb/movie?id=${movieId}`,
             5: contentType === 'tv' ? `https://movieembed.site/tv/${movieId}/${season}/${episode}` : `https://movieembed.site/movie/${movieId}`,
             6: contentType === 'tv' ? `https://vidsrc.pro/embed/tv/${movieId}/${season}/${episode}` : `https://vidsrc.pro/embed/movie/${movieId}`,
             7: contentType === 'tv' ? `https://embed.smashystream.com/playere.php?tmdb=${movieId}&season=${season}&episode=${episode}` : `https://embed.smashystream.com/playere.php?tmdb=${movieId}`,
@@ -343,6 +342,9 @@
         const url = getServerUrl(activeServer, currentSeason, currentEpisode);
         if (url) {
             player.src = url;
+            console.log('Yüklenen URL:', url);
+        } else {
+            console.error('URL oluşturulamadı');
         }
     }
 
@@ -386,7 +388,6 @@
                     <span>👑 NETBOX life Özel</span>
                 `;
 
-                // Sezon bilgilerini al
                 totalSeasons = data.number_of_seasons || 1;
                 const seasonSelect = document.getElementById('seasonSelect');
                 seasonSelect.innerHTML = '';
@@ -398,15 +399,15 @@
                     seasonSelect.appendChild(option);
                 }
                 
-                // İlk sezonun bölümlerini yükle
                 await loadEpisodes(1);
+                loadVideo();
             }
         } catch (error) {
             console.error('Dizi detayları yüklenemedi:', error);
+            loadVideo();
         }
     }
 
-    // Bölümleri yükle
     async function loadEpisodes(seasonNum) {
         try {
             const API_KEY = '096ea7080794ac4c3de90f66c72cc237';
@@ -415,30 +416,24 @@
             const data = await response.json();
             
             if (data && data.episodes) {
-                const episodeCount = data.episodes.length;
                 const episodeSelect = document.getElementById('episodeSelect');
                 episodeSelect.innerHTML = '';
                 
-                for (let i = 1; i <= episodeCount; i++) {
+                data.episodes.forEach(episode => {
                     const option = document.createElement('option');
-                    option.value = i;
-                    const episodeData = data.episodes.find(ep => ep.episode_number === i);
-                    const episodeName = episodeData ? episodeData.name : `${i}. Bölüm`;
-                    option.textContent = `${i}. Bölüm - ${episodeName.substring(0, 30)}`;
+                    option.value = episode.episode_number;
+                    option.textContent = `${episode.episode_number}. Bölüm - ${episode.name.substring(0, 40)}`;
                     episodeSelect.appendChild(option);
-                }
+                });
                 
-                if (episodeCount > 0) {
-                    currentEpisode = 1;
-                    episodeSelect.value = 1;
-                }
+                currentEpisode = 1;
+                episodeSelect.value = 1;
             }
         } catch (error) {
             console.error('Bölümler yüklenemedi:', error);
-            // Fallback: varsayılan 10 bölüm
             const episodeSelect = document.getElementById('episodeSelect');
             episodeSelect.innerHTML = '';
-            for (let i = 1; i <= 10; i++) {
+            for (let i = 1; i <= 12; i++) {
                 const option = document.createElement('option');
                 option.value = i;
                 option.textContent = `${i}. Bölüm`;
@@ -447,40 +442,35 @@
         }
     }
 
-    // Sezon değiştiğinde
     document.getElementById('seasonSelect')?.addEventListener('change', async (e) => {
         currentSeason = parseInt(e.target.value);
         await loadEpisodes(currentSeason);
         currentEpisode = parseInt(document.getElementById('episodeSelect').value);
     });
 
-    // Bölüm değiştiğinde
     document.getElementById('episodeSelect')?.addEventListener('change', (e) => {
         currentEpisode = parseInt(e.target.value);
     });
 
-    // İzle butonu
     document.getElementById('loadEpisodeBtn')?.addEventListener('click', () => {
         currentSeason = parseInt(document.getElementById('seasonSelect').value);
         currentEpisode = parseInt(document.getElementById('episodeSelect').value);
         loadVideo();
     });
 
-    // Film detaylarını yükle
     async function loadMovieDetails() {
         try {
             const API_KEY = '096ea7080794ac4c3de90f66c72cc237';
-            const url = `https://api.themoviedb.org/3/${contentType === 'tv' ? 'tv' : 'movie'}/${movieId}?api_key=${API_KEY}&language=tr-TR`;
+            const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=tr-TR`;
             const response = await fetch(url);
             const data = await response.json();
             
             if (data) {
-                const year = (data.release_date || data.first_air_date || '').split('-')[0];
+                const year = (data.release_date || '').split('-')[0];
                 const rating = data.vote_average ? data.vote_average.toFixed(1) : '?';
-                const type = contentType === 'tv' ? '📺 Dizi' : '🎬 Film';
                 
                 document.getElementById('movieDetails').innerHTML = `
-                    <span>${type}</span>
+                    <span>🎬 Film</span>
                     <span>📅 ${year || '2025'}</span>
                     <span>⭐ ${rating}/10</span>
                     <span>👑 NETBOX life Özel</span>
@@ -491,7 +481,6 @@
         }
     }
 
-    // Başlat
     if (contentType === 'tv') {
         loadTVDetails();
     } else {
