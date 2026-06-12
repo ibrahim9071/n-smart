@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="MutluFlix - Türkçe Dublaj & Altyazı Filmler" />
+    <meta property="og:description" content="En iyi Türkçe dublaj ve altyazılı filmler, diziler." />
+    <meta property="og:url" content="https://deneme-mutluflix.vercel.app/" />
+    <meta property="og:image" content="https://deneme-mutluflix.vercel.app/images/banner.jpg" /> 
+    
+    <title>MutluFlix - Türkçe Dublaj & Altyazı Filmler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #0e1118;
+            --bg-sidebar: #131722;
+            --bg-card: #181f2a;
+            --primary: #e50914;
+            --primary-glow: rgba(229, 9, 20, 0.4);
+            --text-main: #fff;
+            --text-muted: #798296;
+            --border: #222b3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: #2a354a; border-radius: 10px; }
+
+        .sidebar { width: 260px; background: var(--bg-sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; transition: transform 0.3s ease; }
+        .sidebar-brand { padding: 25px; font-size: 24px; font-weight: 800; color: var(--primary); letter-spacing: 1.5px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .sidebar-brand span { color: #fff; }
+        
+        .sidebar-scroller { flex: 1; overflow-y: auto; padding: 20px 15px; }
+        .menu-heading { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1.5px; margin: 20px 0 10px 10px; }
+        
+        .menu-list { list-style: none; }
+        .menu-item a { display: flex; align-items: center; gap: 12px; color: #b1b9ca; text-decoration: none; padding: 12px 15px; font-size: 14px; font-weight: 600; border-radius: 8px; margin-bottom: 4px; transition: all 0.2s ease; }
+        .menu-item a:hover, .menu-item a.active { background: #1c2434; color: #fff; }
+        .menu-item a.active { border-left: 3px solid var(--primary); border-radius: 0 8px 8px 0; color: var(--primary); }
+        
+        .sub-menu { list-style: none; padding-left: 25px; margin: 5px 0; display: none; }
+        .sub-menu a { padding: 8px 12px; font-size: 13px; color: #8e99ae; }
+
+        .main-content { flex: 1; margin-left: 260px; padding: 25px 40px; min-width: 0; }
+
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px; }
+        .search-wrapper { position: relative; width: 350px; }
+        .search-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .search-wrapper input { width: 100%; background: #161c28; border: 1px solid var(--border); padding: 12px 12px 12px 45px; border-radius: 30px; color: #fff; outline: none; font-size: 14px; transition: 0.3s; }
+        .search-wrapper input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+        
+        .topbar-actions { display: flex; gap: 15px; align-items: center; }
+        .action-btn { background: #161c28; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 50%; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        .action-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* REKLAM UYARISI - SADECE BUNU EKLEDİM, YAPI BOZULMADI */
+        .ad-warning {
+            background: #131722;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 12px;
+        }
+        .ad-warning-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .ad-warning-left i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+        .ad-warning-left span strong {
+            color: #10b981;
+        }
+        .ad-warning-right a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .ad-warning-right a:hover {
+            text-decoration: underline;
+        }
+        /* BURAYA KADAR */
+
+        .filter-container { display: flex; gap: 12px; flex-wrap: wrap; background: #131722; padding: 15px 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 35px; align-items: center; }
+        .filter-label { font-size: 12px; font-weight: bold; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .filter-dropdown { background: #181f2a; border: 1px solid var(--border); color: #fff; padding: 10px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; min-width: 130px; transition: 0.2s; }
+        .filter-dropdown:focus { border-color: var(--primary); }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .category-title { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; position: relative; }
+        .category-title::after { content: ''; display: block; width: 40px; height: 4px; background: var(--primary); border-radius: 2px; margin-top: 5px; }
+
+        .share-box { display: flex; align-items: center; gap: 10px; background: #131722; padding: 8px 15px; border-radius: 30px; border: 1px solid var(--border); font-size: 13px; }
+        .share-box a { color: #8e99ae; transition: 0.2s; font-size: 15px; }
+        .share-box a:hover { transform: scale(1.15); }
+        .share-box a.wa:hover { color: #25D366; }
+        .share-box a.fb:hover { color: #1877F2; }
+        .share-box a.tg:hover { color: #0088cc; }
+
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 25px; }
+        .movie-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; display: flex; flex-direction: column; text-decoration: none; cursor: pointer; }
+        .movie-card:hover { transform: translateY(-8px); border-color: #313d54; box-shadow: 0 12px 24px rgba(0,0,0,0.5); }
+        
+        .img-container { position: relative; width: 100%; height: 250px; overflow: hidden; background: #07090e; }
+        .movie-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .movie-card:hover img { transform: scale(1.06); }
+        
+        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--primary); color: #fff; font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+        .card-badge.quality { left: auto; right: 12px; background: #3b82f6; }
+        .card-badge.dubbed { left: auto; right: 12px; top: 40px; background: #10b981; }
+
+        .movie-info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .movie-title { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px; }
+        
+        .movie-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); font-weight: 600; }
+        .rating { color: #ffb400; display: flex; align-items: center; gap: 4px; }
+
+        .load-more-container { text-align: center; margin: 50px 0 20px 0; }
+        .load-more-btn { background: #131722; border: 1px solid var(--border); color: #fff; padding: 14px 40px; font-size: 14px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: 0.3s; }
+        .load-more-btn:hover { border-color: var(--primary); background: var(--primary); box-shadow: 0 4px 15px var(--primary-glow); }
+
+        .menu-trigger { display: none; }
+        
+        .retry-btn { background: var(--primary); border: none; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px; }
+            .menu-trigger { display: block; }
+            .search-wrapper { width: 100%; }
+        }
+        @media (max-width: 580px) {
+            .topbar { flex-direction: column; align-items: flex-start; }
+            .filter-container { flex-direction: column; align-items: stretch; }
+            .movie-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+            .img-container { height: 210px; }
+            /* Mobilde uyarı düzenlemesi */
+            .ad-warning { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebarMenu">
+        <div class="sidebar-brand" onclick="goToHome()">Mutlu<span>Flix</span></div>
+        
+        <div class="sidebar-scroller">
+            <div class="menu-heading">Keşfet</div>
+            <ul class="menu-list">
+                <li class="menu-item"><a href="#" id="btn-trending" class="active" onclick="loadTrending()"><i class="fas fa-fire"></i> Trend Olanlar</a></li>
+            </ul>
+
+            <div class="menu-heading">🎬 Diller</div>
+            <ul class="menu-list">
+                <li class="menu-item"><a href="#" onclick="filterContent('movie', 'discover', 'Türkçe Filmler', 'tr')"><i class="fas fa-film"></i> 🇹🇷 Türkçe Filmler</a></li>
+                <li class="menu-item"><a href="#" onclick="filterContent('movie', 'discover', 'İngilizce Filmler', 'en')"><i class="fas fa-film"></i> 🇬🇧 İngilizce Filmler</a></li>
+            </ul>
+
+            <div class="menu-heading">🎤 Türkçe Dublaj & Altyazı</div>
+            <ul class="menu-list">
+                <li class="menu-item"><a href="#" onclick="filterTurkishContent('dubbed')"><i class="fas fa-microphone"></i> Türkçe Dublaj</a></li>
+                <li class="menu-item"><a href="#" onclick="filterTurkishContent('subbed')"><i class="fas fa-closed-captioning"></i> Türkçe Altyazı</a></li>
+            </ul>
+
+            <div class="menu-heading">📺 Diziler</div>
+            <ul class="menu-list">
+                <li class="menu-item"><a href="#" onclick="filterContent('tv', 'trending', 'Trend Diziler')"><i class="fas fa-tv"></i> Trend Diziler</a></li>
+                <li class="menu-item"><a href="#" onclick="filterContent('tv', 'discover', 'Kore Dizileri', 'ko')"><i class="fas fa-heart"></i> Kore Dizileri</a></li>
+                <li class="menu-item"><a href="#" onclick="filterContent('tv', 'discover', 'Türkçe Diziler', 'tr')"><i class="fas fa-tv"></i> Türkçe Diziler</a></li>
+            </ul>
+
+            <div class="menu-heading">🎬 Kategoriler</div>
+            <ul class="menu-list">
+                <li class="menu-item"><a href="#" onclick="filterByGenre(28)"><i class="fas fa-fist-raised"></i> Aksiyon</a></li>
+                <li class="menu-item"><a href="#" onclick="filterByGenre(35)"><i class="fas fa-laugh"></i> Komedi</a></li>
+                <li class="menu-item"><a href="#" onclick="filterByGenre(27)"><i class="fas fa-ghost"></i> Korku</a></li>
+                <li class="menu-item"><a href="#" onclick="filterByGenre(10749)"><i class="fas fa-heart"></i> Romantik</a></li>
+                <li class="menu-item"><a href="#" onclick="filterByGenre(878)"><i class="fas fa-rocket"></i> Bilim Kurgu</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div style="display:flex; align-items:center; gap:15px; width:100%;">
+                <button class="action-btn menu-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Film, dizi ara...">
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <button class="action-btn" onclick="shareWholeSite()"><i class="fas fa-share-nodes"></i></button>
+            </div>
+        </header>
+
+        <!-- REKLAM UYARISI - SADECE BURAYI EKLEDİM -->
+        <div class="ad-warning">
+            <div class="ad-warning-left">
+                <i class="fas fa-shield-alt"></i>
+                <span>🚫 <strong>MutluFlix</strong> tamamen reklamsızdır!</span>
+                <span>Gördüğünüz reklamlar <strong>video oynatıcı sağlayıcılarına</strong> aittir.</span>
+            </div>
+            <div class="ad-warning-right">
+                📺 <a href="https://ublockorigin.com/" target="_blank">uBlock Origin ile reklamları engelle</a>
+            </div>
+        </div>
+
+        <section class="filter-container">
+            <span class="filter-label"><i class="fas fa-filter"></i> Filtrele:</span>
+            <select class="filter-dropdown" id="filterGenre" onchange="resetPageAndFetch()">
+                <option value="">Tüm Türler</option>
+                <option value="28">Aksiyon</option>
+                <option value="12">Macera</option>
+                <option value="16">Animasyon</option>
+                <option value="35">Komedi</option>
+                <option value="18">Dram</option>
+                <option value="10751">Aile</option>
+                <option value="27">Korku</option>
+                <option value="9648">Gizem</option>
+                <option value="10749">Romantik</option>
+                <option value="878">Bilim Kurgu</option>
+                <option value="53">Gerilim</option>
+            </select>
+
+            <select class="filter-dropdown" id="filterYear" onchange="resetPageAndFetch()">
+                <option value="">Tüm Yıllar</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+            </select>
+
+            <select class="filter-dropdown" id="filterLanguage" onchange="changeLanguage()">
+                <option value="tr-TR">🇹🇷 Türkçe (TR)</option>
+                <option value="en-US">🇬🇧 English (US)</option>
+            </select>
+        </section>
+
+        <div class="section-header">
+            <h2 class="category-title" id="pageTitle">Trend Olanlar</h2>
+            <div class="share-box">
+                <span>Paylaş:</span>
+                <a class="wa" id="share-wa" href="#" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a class="fb" id="share-fb" href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a class="tg" id="share-tg" href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+            </div>
+        </div>
+
+        <div class="movie-grid" id="main-movie-grid"></div>
+
+        <div class="load-more-container">
+            <button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">Daha Fazla Yükle</button>
+        </div>
+    </main>
+
+   <script>
+const BASE_URL = "/api/fetch";
+
+let currentPage = 1;
+let currentMode = 'movie';
+let currentType = 'trending';
+let currentLang = '';
+let currentTurkishFilter = ''; // 'dubbed', 'subbed' veya boş
+let searchQuery = '';
+let currentApiLanguage = 'tr-TR'; // Varsayılan dil Türkçe
+
+const siteUrl = window.location.href;
+
+function goToHome() {
+    window.location.href = '/';
+}
+
+function toggleSidebar() {
+    document.getElementById('sidebarMenu').classList.toggle('active');
+}
+
+function changeLanguage() {
+    currentApiLanguage = document.getElementById('filterLanguage').value;
+    resetPageAndFetch();
+}
+
+function filterTurkishContent(type) {
+    currentTurkishFilter = type;
+    currentLang = '';
+    searchQuery = '';
+    currentType = 'discover';
+    currentMode = 'movie';
+    
+    const titleText = type === 'dubbed' ? 'Türkçe Dublaj Filmler' : 'Türkçe Altyazılı Filmler';
+    document.getElementById('pageTitle').innerText = titleText;
+    
+    document.getElementById('filterGenre').value = '';
+    document.getElementById('filterYear').value = '';
+    
+    fetchMovies(false);
+    updateShareLinks(titleText);
+}
+
+function filterByGenre(genreId) {
+    document.getElementById('filterGenre').value = genreId;
+    currentTurkishFilter = '';
+    resetPageAndFetch();
+}
+
+async function fetchMovies(isLoadMore = false, retries = 2) {
+    const grid = document.getElementById('main-movie-grid');
+
+    if (!isLoadMore) {
+        grid.innerHTML = '<p style="padding:20px;color:#aaa;">Filmler yükleniyor...</p>';
+        currentPage = 1;
+    }
+
+    const genre = document.getElementById('filterGenre').value;
+    const year = document.getElementById('filterYear').value;
+
+    let target_url = '';
+
+    // ARAMA
+    if (searchQuery) {
+        target_url = `${BASE_URL}?action=search&query=${encodeURIComponent(searchQuery)}&page=${currentPage}&language=${currentApiLanguage}`;
+    }
+    // TRENDING
+    else if (currentType === 'trending') {
+        target_url = `${BASE_URL}?type=trending&mode=${currentMode}&page=${currentPage}&language=${currentApiLanguage}`;
+    }
+    // DISCOVER
+    else {
+        target_url = `${BASE_URL}?mode=${currentMode}&page=${currentPage}&language=${currentApiLanguage}`;
+    }
+
+    // Dil filtresi
+    if (currentLang) {
+        target_url += `&with_original_language=${currentLang}`;
+    }
+
+    // Türkçe Dublaj/Altyazı filtresi (TMDB'de belirli keyword'lerle)
+    if (currentTurkishFilter === 'dubbed') {
+        target_url += `&with_keywords=türkçe dublaj|turkce dublaj|turkish dubbed`;
+    } else if (currentTurkishFilter === 'subbed') {
+        target_url += `&with_keywords=türkçe altyazı|turkce altyazi|turkish subtitles`;
+    }
+
+    // Tür ve yıl filtreleri
+    if (genre) {
+        target_url += `&with_genres=${genre}`;
+    }
+
+    if (year) {
+        if (year === '2020') {
+            target_url += `&primary_release_date.gte=2020-01-01&primary_release_date.lte=2026-12-31`;
+        } else {
+            target_url += `&primary_release_year=${year}`;
+        }
+    }
+
+    try {
+        const response = await fetch(target_url);
+
+        if (!response.ok) {
+            throw new Error("API Error");
+        }
+
+        const data = await response.json();
+
+        if (!isLoadMore) {
+            grid.innerHTML = '';
+        }
+
+        if (!data.results || data.results.length === 0) {
+            grid.innerHTML = '<p style="padding:20px;color:#777;">Film bulunamadı.</p>';
+            return;
+        }
+
+        data.results.forEach(item => {
+            if (!item.poster_path) return;
+
+            let title = item.title || item.name || 'Bilinmeyen';
+            const safeTitle = escapeHTML(title);
+            const rating = item.vote_average ? item.vote_average.toFixed(1) : '7.0';
+            const yearData = (item.release_date || item.first_air_date || '2025').split('-')[0];
+            
+            let itemMode = currentMode;
+            if (item.media_type) {
+                itemMode = item.media_type;
+            }
+
+            const watchLink = `watch.html?id=${item.id}&mode=${itemMode}&title=${encodeURIComponent(title)}`;
+
+            const card = document.createElement('div');
+            card.className = 'movie-card';
+
+            let badgeHtml = '<span class="card-badge">Yeni</span><span class="card-badge quality">4K HD</span>';
+            
+            if (currentTurkishFilter === 'dubbed') {
+                badgeHtml += '<span class="card-badge dubbed">🇹🇷 Dublaj</span>';
+            } else if (currentTurkishFilter === 'subbed') {
+                badgeHtml += '<span class="card-badge dubbed">🇹🇷 Altyazı</span>';
+            }
+
+            card.innerHTML = `
+                <div class="img-container">
+                    ${badgeHtml}
+                    <img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${safeTitle}" loading="lazy">
+                </div>
+                <div class="movie-info">
+                    <div class="movie-title">${safeTitle}</div>
+                    <div class="movie-meta">
+                        <span>${yearData}</span>
+                        <span class="rating">⭐ ${rating}</span>
+                    </div>
+                </div>
+            `;
+
+            card.onclick = () => {
+                window.location.href = watchLink;
+            };
+
+            grid.appendChild(card);
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        if (retries > 0) {
+            setTimeout(() => {
+                fetchMovies(isLoadMore, retries - 1);
+            }, 1000);
+        } else {
+            grid.innerHTML = `
+                <div style="padding:20px;color:red;">
+                    Bağlantı hatası! API geçici olarak kullanılamıyor.
+                    <br><br>
+                    <button class="retry-btn" onclick="fetchMovies(false)">Tekrar Dene</button>
+                </div>
+            `;
+        }
+    }
+}
+
+function loadTrending() {
+    setActiveLink(document.getElementById('btn-trending'));
+    document.getElementById('pageTitle').innerText = 'Trend Olanlar';
+    document.getElementById('filterGenre').value = '';
+    document.getElementById('filterYear').value = '';
+
+    currentMode = 'movie';
+    currentType = 'trending';
+    currentLang = '';
+    currentTurkishFilter = '';
+    searchQuery = '';
+
+    fetchMovies(false);
+    updateShareLinks('Trending');
+}
+
+function filterContent(mode, type, sectionName, lang = '') {
+    document.getElementById('pageTitle').innerText = sectionName;
+    currentMode = mode;
+    currentType = type;
+    currentLang = lang;
+    currentTurkishFilter = '';
+    searchQuery = '';
+
+    document.getElementById('filterGenre').value = '';
+    document.getElementById('filterYear').value = '';
+
+    fetchMovies(false);
+    updateShareLinks(sectionName);
+}
+
+function resetPageAndFetch() {
+    currentPage = 1;
+    fetchMovies(false);
+}
+
+function loadMore() {
+    currentPage++;
+    fetchMovies(true);
+}
+
+function setActiveLink(el) {
+    document.querySelectorAll('.menu-item a').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+}
+
+function escapeHTML(str) {
+    if (!str) return 'Bilinmeyen';
+    return str.replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+    }[tag] || tag));
+}
+
+document.querySelectorAll('.menu-item > a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        if (!this.innerHTML.includes('fa-chevron-down')) {
+            setActiveLink(this);
+            if (window.innerWidth <= 1024) {
+                toggleSidebar();
+            }
+        }
+    });
+});
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    const q = e.target.value.trim();
+    if (q.length > 2) {
+        document.getElementById('pageTitle').innerText = `Arama: "${q}"`;
+        searchQuery = q;
+        currentTurkishFilter = '';
+        resetPageAndFetch();
+    } else if (q.length === 0) {
+        loadTrending();
+    }
+});
+
+function shareWholeSite() {
+    if (navigator.share) {
+        navigator.share({
+            title: 'MutluFlix - Türkçe Dublaj & Altyazı',
+            url: siteUrl
+        });
+    } else {
+        window.open(`https://api.whatsapp.com/send?text=MutluFlix%20Türkçe%20Filmler%20${encodeURIComponent(siteUrl)}`);
+    }
+}
+
+function updateShareLinks(name) {
+    const txt = encodeURIComponent(`${name} - MutluFlix'da izle!`);
+    const url = encodeURIComponent(siteUrl);
+    document.getElementById('share-wa').href = `https://api.whatsapp.com/send?text=${txt}%20${url}`;
+    document.getElementById('share-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    document.getElementById('share-tg').href = `https://telegram.me/share/url?url=${url}&text=${txt}`;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    loadTrending();
+});
+</script>
+</body>
+</html>
