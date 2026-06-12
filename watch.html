@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MutluFlix - Film İzle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #0a0c12;
+            color: #fff;
+        }
+
+        .header {
+            background: #11161f;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            background: #1a1f2e;
+            padding: 10px 22px;
+            border-radius: 40px;
+            border: 1px solid #2d3748;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #e50914;
+            border-color: #e50914;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: #e50914;
+            cursor: pointer;
+        }
+
+        .logo span { color: #fff; }
+
+        /* SADECE UYARI BANNER - REKLAM ENGELLEYICI YOK */
+        .warning-banner {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0f1117 100%);
+            border: 1px solid #e50914;
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin: 15px 20px 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .warning-banner i {
+            color: #e50914;
+            font-size: 20px;
+        }
+
+        .warning-banner strong {
+            color: #e50914;
+        }
+
+        .player-container {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .server-section {
+            background: #11161f;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #1f2937;
+        }
+
+        .server-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .server-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .server-btn {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            padding: 12px 8px;
+            border-radius: 10px;
+            color: #e5e7eb;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .server-btn:hover {
+            background: #2d3748;
+            transform: translateY(-2px);
+        }
+
+        .server-btn.active {
+            background: #e50914;
+            border-color: #e50914;
+            color: #fff;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #1f2937;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .movie-info {
+            margin-top: 25px;
+            padding: 20px;
+            background: #11161f;
+            border-radius: 16px;
+            border: 1px solid #1f2937;
+        }
+
+        .movie-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .movie-details {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .movie-details span {
+            background: #1a1f2e;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 30px;
+            font-size: 12px;
+            color: #4b5563;
+            border-top: 1px solid #1f2937;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 12px 15px; }
+            .movie-title { font-size: 20px; }
+            .server-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+            .server-btn { padding: 8px 4px; font-size: 10px; }
+            .warning-banner { margin: 10px 15px 0 15px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i> Geri</a>
+    <div class="logo" onclick="window.location.href='index.html'">MUTLU<span>FLIX</span></div>
+</div>
+
+<!-- SADECE UYARI BANNER - REKLAM BİZE AİT DEĞİL -->
+<div class="warning-banner">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-shield-alt"></i>
+        <span>⚠️ <strong>MutluFlix</strong> reklamsız bir sitedir!</span>
+        <span>Gördüğünüz reklamlar <strong>video oynatıcı sağlayıcılarına</strong> aittir.</span>
+    </div>
+    <div>
+        <i class="fas fa-check-circle" style="color:#10b981;"></i> %100 Reklamsız Site
+    </div>
+</div>
+
+<div class="player-container">
+    <div class="server-section">
+        <div class="server-title">
+            <i class="fas fa-server"></i> Video Oynatıcı Seçin
+        </div>
+        <div class="server-grid" id="serverGrid">
+            <button class="server-btn active" data-server="1"><i class="fas fa-play"></i> VidSrc</button>
+            <button class="server-btn" data-server="2"><i class="fas fa-bolt"></i> Embed.su</button>
+            <button class="server-btn" data-server="3"><i class="fas fa-film"></i> MultiEmbed</button>
+            <button class="server-btn" data-server="4"><i class="fas fa-tv"></i> 2Embed</button>
+            <button class="server-btn" data-server="5"><i class="fas fa-video"></i> MovieEmbed</button>
+            <button class="server-btn" data-server="6"><i class="fas fa-play-circle"></i> VidSrc Pro</button>
+            <button class="server-btn" data-server="7"><i class="fas fa-cloud"></i> Smashy</button>
+            <button class="server-btn" data-server="8"><i class="fas fa-link"></i> VidLink</button>
+            <button class="server-btn" data-server="9"><i class="fas fa-hdd"></i> AutoEmbed</button>
+        </div>
+        <p style="font-size: 11px; color: #6b7280; margin-top: 12px; text-align: center;">
+            💡 Bir player çalışmazsa başka player deneyin. Reklamlar player sağlayıcılara aittir.
+        </p>
+    </div>
+
+    <div class="video-wrapper">
+        <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+    </div>
+
+    <div class="movie-info">
+        <h1 class="movie-title" id="movieTitle">Yükleniyor...</h1>
+        <div class="movie-details" id="movieDetails"></div>
+    </div>
+</div>
+
+<div class="footer-note">
+    <p>🍿 <strong>MutluFlix</strong> - Reklamsız Film Keyfi | Videolardaki reklamlar 3. parti sağlayıcılara aittir.</p>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const movieId = urlParams.get('id');
+    const movieTitle = decodeURIComponent(urlParams.get('title') || 'Film İzle');
+    let contentType = urlParams.get('mode') || 'movie';
+
+    document.getElementById('movieTitle').innerText = movieTitle;
+    document.title = `${movieTitle} - MutluFlix`;
+
+    // YENİ API KEY İLE PLAYER SUNUCULARI
+    const servers = {
+        1: contentType === 'tv' ? `https://vidsrc.in/embed/tv/${movieId}/1/1` : `https://vidsrc.in/embed/movie/${movieId}`,
+        2: contentType === 'tv' ? `https://embed.su/embed/tv/${movieId}/1/1` : `https://embed.su/embed/movie/${movieId}`,
+        3: contentType === 'tv' ? `https://multiembed.mov/?video_id=${movieId}&tmdb=1&season=1&episode=1` : `https://multiembed.mov/?video_id=${movieId}&tmdb=1`,
+        4: contentType === 'tv' ? `https://2embed.org/embed/tv/${movieId}/1/1` : `https://2embed.org/embed/movie/${movieId}`,
+        5: contentType === 'tv' ? `https://movieembed.site/tv/${movieId}/1/1` : `https://movieembed.site/movie/${movieId}`,
+        6: contentType === 'tv' ? `https://vidsrc.pro/embed/tv/${movieId}/1/1` : `https://vidsrc.pro/embed/movie/${movieId}`,
+        7: contentType === 'tv' ? `https://embed.smashystream.com/playere.php?tmdb=${movieId}&season=1&episode=1` : `https://embed.smashystream.com/playere.php?tmdb=${movieId}`,
+        8: contentType === 'tv' ? `https://vidlink.pro/tv/${movieId}/1/1` : `https://vidlink.pro/movie/${movieId}`,
+        9: contentType === 'tv' ? `https://autoembed.to/tv/tmdb/${movieId}-1-1` : `https://autoembed.to/movie/tmdb/${movieId}`
+    };
+
+    let activeServer = 1;
+    const player = document.getElementById('videoPlayer');
+    
+    if (servers[activeServer]) {
+        player.src = servers[activeServer];
+    }
+
+    // Player seçim butonları
+    document.querySelectorAll('.server-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const serverNum = parseInt(btn.dataset.server);
+            if (!servers[serverNum]) {
+                alert('Bu player şu anda kullanılamıyor.');
+                return;
+            }
+            
+            document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeServer = serverNum;
+            player.src = servers[activeServer];
+        });
+    });
+
+    // Film detaylarını çek - YENİ API KEY İLE
+    async function loadMovieDetails() {
+        try {
+            const API_KEY = 'Buraya Api Key Gir ';
+            const url = `https://api.themoviedb.org/3/${contentType === 'tv' ? 'tv' : 'movie'}/${movieId}?api_key=${API_KEY}&language=tr-TR`;
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data) {
+                const year = (data.release_date || data.first_air_date || '').split('-')[0];
+                const rating = data.vote_average ? data.vote_average.toFixed(1) : '?';
+                const type = contentType === 'tv' ? '📺 Dizi' : '🎬 Film';
+                
+                document.getElementById('movieDetails').innerHTML = `
+                    <span>${type}</span>
+                    <span>📅 ${year || '2025'}</span>
+                    <span>⭐ ${rating}/10</span>
+                    <span>🎥 MutluFlix Özel</span>
+                `;
+            }
+        } catch (error) {
+            console.error('Detay yüklenemedi:', error);
+        }
+    }
+
+    loadMovieDetails();
+</script>
+</body>
+</html>
