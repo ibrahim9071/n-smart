@@ -261,7 +261,7 @@
 <div class="player-container">
     <div class="server-section">
         <div class="server-title">
-            <i class="fas fa-server"></i> Video Oynatıcı Seçin (9 Farklı Server)
+            <i class="fas fa-server"></i> Video Oynatıcı Seçin (10 Farklı Server)
         </div>
         <div class="server-grid" id="serverGrid">
             <button class="server-btn active" data-server="1"><i class="fas fa-play"></i> VidSrc</button>
@@ -273,6 +273,7 @@
             <button class="server-btn" data-server="7"><i class="fas fa-cloud"></i> Smashy</button>
             <button class="server-btn" data-server="8"><i class="fas fa-link"></i> VidLink</button>
             <button class="server-btn" data-server="9"><i class="fas fa-hdd"></i> AutoEmbed</button>
+            <button class="server-btn" data-server="10"><i class="fas fa-language"></i> Vidrame</button>
         </div>
         <p style="font-size: 11px; color: #d4af37; margin-top: 12px; text-align: center;">
             💡 Bir player çalışmazsa başka player deneyin. Dizilerde bölüm seçip "Bölümü Yükle" butonuna basın.
@@ -302,7 +303,7 @@
 
 <div class="footer-note">
     <p>🍿 <strong>NETBOX life</strong> - Reklamsız Film Keyfi | Videolardaki reklamlar 3. parti sağlayıcılara aittir.</p>
-    <p style="margin-top: 8px;">✨ 9 Farklı Server ile Kesintisiz İzleme Deneyimi ✨</p>
+    <p style="margin-top: 8px;">✨ 10 Farklı Server ile Kesintisiz İzleme Deneyimi ✨</p>
 </div>
 
 <script>
@@ -317,10 +318,10 @@
     document.getElementById('movieTitle').innerText = movieTitle;
     document.title = `${movieTitle} - NETBOX life`;
 
-    // TÜM 9 PLAYER - DİZİ VE FİLM FORMATLARI
+    // TÜM 10 PLAYER - VİDRAME EKLENDİ
     function getServerUrl(serverNum, season, episode) {
         if (contentType === 'tv') {
-            // DİZİ URL'LERİ (9 player)
+            // DİZİ URL'LERİ (10 player)
             const tvUrls = {
                 1: `https://vidsrc.xyz/embed/tv/${movieId}/${season}/${episode}`,
                 2: `https://embed.su/embed/tv/${movieId}/${season}/${episode}`,
@@ -330,11 +331,12 @@
                 6: `https://vidsrc.pro/embed/tv/${movieId}/${season}/${episode}`,
                 7: `https://embed.smashystream.com/playere.php?tmdb=${movieId}&season=${season}&episode=${episode}`,
                 8: `https://vidlink.pro/tv/${movieId}/${season}/${episode}`,
-                9: `https://autoembed.to/tv/tmdb/${movieId}-${season}-${episode}`
+                9: `https://autoembed.to/tv/tmdb/${movieId}-${season}-${episode}`,
+                10: `https://vidrame.io/embed/${movieId}/${season}/${episode}`
             };
             return tvUrls[serverNum];
         } else {
-            // FİLM URL'LERİ (9 player)
+            // FİLM URL'LERİ (10 player)
             const movieUrls = {
                 1: `https://vidsrc.xyz/embed/movie/${movieId}`,
                 2: `https://embed.su/embed/movie/${movieId}`,
@@ -344,7 +346,8 @@
                 6: `https://vidsrc.pro/embed/movie/${movieId}`,
                 7: `https://embed.smashystream.com/playere.php?tmdb=${movieId}`,
                 8: `https://vidlink.pro/movie/${movieId}`,
-                9: `https://autoembed.to/movie/tmdb/${movieId}`
+                9: `https://autoembed.to/movie/tmdb/${movieId}`,
+                10: `https://vidrame.io/embed/${movieId}`
             };
             return movieUrls[serverNum];
         }
