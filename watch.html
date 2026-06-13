@@ -264,16 +264,16 @@
             <i class="fas fa-server"></i> Video Oynatıcı Seçin (10 Farklı Server)
         </div>
         <div class="server-grid" id="serverGrid">
-            <button class="server-btn active" data-server="1"><i class="fas fa-play"></i> VidSrc</button>
+            <button class="server-btn active" data-server="1"><i class="fas fa-play"></i> VidSrc.xyz</button>
             <button class="server-btn" data-server="2"><i class="fas fa-bolt"></i> Embed.su</button>
-            <button class="server-btn" data-server="3"><i class="fas fa-film"></i> MultiEmbed</button>
-            <button class="server-btn" data-server="4"><i class="fas fa-tv"></i> 2Embed</button>
-            <button class="server-btn" data-server="5"><i class="fas fa-video"></i> MovieEmbed</button>
-            <button class="server-btn" data-server="6"><i class="fas fa-play-circle"></i> VidSrc Pro</button>
-            <button class="server-btn" data-server="7"><i class="fas fa-cloud"></i> Smashy</button>
+            <button class="server-btn" data-server="3"><i class="fas fa-tv"></i> 2Embed</button>
+            <button class="server-btn" data-server="4"><i class="fas fa-play-circle"></i> VidSrc.pro</button>
+            <button class="server-btn" data-server="5"><i class="fas fa-film"></i> MultiEmbed</button>
+            <button class="server-btn" data-server="6"><i class="fas fa-video"></i> VidSrc.me</button>
+            <button class="server-btn" data-server="7"><i class="fas fa-hdd"></i> AutoEmbed</button>
             <button class="server-btn" data-server="8"><i class="fas fa-link"></i> VidLink</button>
-            <button class="server-btn" data-server="9"><i class="fas fa-hdd"></i> AutoEmbed</button>
-            <button class="server-btn" data-server="10"><i class="fas fa-language"></i> Vidrame</button>
+            <button class="server-btn" data-server="9"><i class="fas fa-box"></i> MovieEmbed</button>
+            <button class="server-btn" data-server="10"><i class="fas fa-cloud"></i> Smashy</button>
         </div>
         <p style="font-size: 11px; color: #d4af37; margin-top: 12px; text-align: center;">
             💡 Bir player çalışmazsa başka player deneyin. Dizilerde bölüm seçip "Bölümü Yükle" butonuna basın.
@@ -318,21 +318,21 @@
     document.getElementById('movieTitle').innerText = movieTitle;
     document.title = `${movieTitle} - NETBOX life`;
 
-    // TÜM 10 PLAYER - VİDRAME EKLENDİ
+    // 10 PLAYER - EN İYİ 10 EMBED SERVİSİ
     function getServerUrl(serverNum, season, episode) {
         if (contentType === 'tv') {
             // DİZİ URL'LERİ (10 player)
             const tvUrls = {
                 1: `https://vidsrc.xyz/embed/tv/${movieId}/${season}/${episode}`,
                 2: `https://embed.su/embed/tv/${movieId}/${season}/${episode}`,
-                3: `https://multiembed.mov/?video_id=${movieId}&tmdb=1&season=${season}&episode=${episode}`,
-                4: `https://2embed.org/embed/tv/${movieId}/${season}/${episode}`,
-                5: `https://movieembed.site/tv/${movieId}/${season}/${episode}`,
-                6: `https://vidsrc.pro/embed/tv/${movieId}/${season}/${episode}`,
-                7: `https://embed.smashystream.com/playere.php?tmdb=${movieId}&season=${season}&episode=${episode}`,
+                3: `https://2embed.org/embed/tv/${movieId}/${season}/${episode}`,
+                4: `https://vidsrc.pro/embed/tv/${movieId}/${season}/${episode}`,
+                5: `https://multiembed.mov/?video_id=${movieId}&tmdb=1&season=${season}&episode=${episode}`,
+                6: `https://vidsrc.me/embed/tv/${movieId}/${season}/${episode}`,
+                7: `https://autoembed.to/tv/tmdb/${movieId}-${season}-${episode}`,
                 8: `https://vidlink.pro/tv/${movieId}/${season}/${episode}`,
-                9: `https://autoembed.to/tv/tmdb/${movieId}-${season}-${episode}`,
-                10: `https://vidrame.io/embed/${movieId}/${season}/${episode}`
+                9: `https://movieembed.site/tv/${movieId}/${season}/${episode}`,
+                10: `https://embed.smashystream.com/playere.php?tmdb=${movieId}&season=${season}&episode=${episode}`
             };
             return tvUrls[serverNum];
         } else {
@@ -340,14 +340,14 @@
             const movieUrls = {
                 1: `https://vidsrc.xyz/embed/movie/${movieId}`,
                 2: `https://embed.su/embed/movie/${movieId}`,
-                3: `https://multiembed.mov/?video_id=${movieId}&tmdb=1`,
-                4: `https://2embed.org/embed/movie/${movieId}`,
-                5: `https://movieembed.site/movie/${movieId}`,
-                6: `https://vidsrc.pro/embed/movie/${movieId}`,
-                7: `https://embed.smashystream.com/playere.php?tmdb=${movieId}`,
+                3: `https://2embed.org/embed/movie/${movieId}`,
+                4: `https://vidsrc.pro/embed/movie/${movieId}`,
+                5: `https://multiembed.mov/?video_id=${movieId}&tmdb=1`,
+                6: `https://vidsrc.me/embed/movie/${movieId}`,
+                7: `https://autoembed.to/movie/tmdb/${movieId}`,
                 8: `https://vidlink.pro/movie/${movieId}`,
-                9: `https://autoembed.to/movie/tmdb/${movieId}`,
-                10: `https://vidrame.io/embed/${movieId}`
+                9: `https://movieembed.site/movie/${movieId}`,
+                10: `https://embed.smashystream.com/playere.php?tmdb=${movieId}`
             };
             return movieUrls[serverNum];
         }
